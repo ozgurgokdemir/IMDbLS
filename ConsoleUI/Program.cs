@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using IMDbLSLibrary;
 
 namespace ConsoleUI
 {
@@ -6,7 +8,14 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            MovieList movieList = new MovieList();
+            List<MovieModel> list = movieList.Get();
+            int position = 0;
+            foreach (var item in list)
+            {
+                position++;
+                Console.WriteLine($"{ position }. { item.MovieName } *{ item.MovieRate }");
+            }
         }
     }
 }
