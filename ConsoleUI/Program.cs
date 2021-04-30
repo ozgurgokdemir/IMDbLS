@@ -10,12 +10,14 @@ namespace ConsoleUI
         {
             MovieList movieList = new MovieList();
             List<MovieModel> list = movieList.Get();
+            List<MovieModel> sortedList = movieList.Sort(list);
             int position = 0;
-            foreach (var item in list)
+            foreach (var item in sortedList)
             {
                 position++;
                 Console.WriteLine($"{ position }. { item.MovieName } *{ item.MovieRate }");
             }
         }
+
     }
 }

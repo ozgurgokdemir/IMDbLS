@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using HtmlAgilityPack;
+using System.Linq;
 
 namespace IMDbLSLibrary
 {
@@ -24,6 +25,10 @@ namespace IMDbLSLibrary
                 }
             }
             return output;
+        }
+        public List<MovieModel> Sort(List<MovieModel> movieList)
+        {
+            return movieList.OrderByDescending(x => x.MovieRate).ThenBy(x => x.MovieName).ToList();
         }
     }
 }
