@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleUI", "ConsoleUI\ConsoleUI.csproj", "{6392D59C-A742-4006-AE8B-C649E1C4E5EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleUI", "ConsoleUI\ConsoleUI.csproj", "{6392D59C-A742-4006-AE8B-C649E1C4E5EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMDbLSLibrary", "IMDbLSLibrary\IMDbLSLibrary.csproj", "{87B0B18A-85FD-404A-9B7A-FEDCD1A94EBA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IMDbLSLibrary", "IMDbLSLibrary\IMDbLSLibrary.csproj", "{87B0B18A-85FD-404A-9B7A-FEDCD1A94EBA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMDbLSLibrary.Tests", "IMDbLSLibrary.Tests\IMDbLSLibrary.Tests.csproj", "{4EE4510A-3143-498F-9F12-C2D80D8FEDB8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{87B0B18A-85FD-404A-9B7A-FEDCD1A94EBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87B0B18A-85FD-404A-9B7A-FEDCD1A94EBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87B0B18A-85FD-404A-9B7A-FEDCD1A94EBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EE4510A-3143-498F-9F12-C2D80D8FEDB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EE4510A-3143-498F-9F12-C2D80D8FEDB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EE4510A-3143-498F-9F12-C2D80D8FEDB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EE4510A-3143-498F-9F12-C2D80D8FEDB8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
