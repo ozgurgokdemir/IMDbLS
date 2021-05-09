@@ -5,12 +5,11 @@ using System.Linq;
 
 namespace IMDbLSLibrary
 {
-    public class MovieList
+    public static class MovieList
     {
-        public List<MovieModel> Get(string url)
+        public static List<MovieModel> Get(string url)
         {
-            HtmlWeb web = new HtmlWeb();
-            HtmlDocument document = web.Load(url);
+            HtmlDocument document = LoadHtmlDocument(url);
             if (url.Contains("list") && url.Contains("watchlist") == false || url.Contains("ratings"))
             {
                 return GetInnerText(document, "//div[@class='lister-list']//div[@class='lister-item-content']", ".//h3[@class='lister-item-header']//a", ".//span[@class='ipl-rating-star__rating']");
@@ -21,16 +20,21 @@ namespace IMDbLSLibrary
             }
             else
             {
-                return null;
+                throw new ArgumentException($"URL Subdirectory is missing. Please check the URL and try again.");
             }
         }
-        private List<MovieModel> GetInnerText(HtmlDocument document, string mainXpath, string nameXpath, string rateXpath)
+        public static HtmlDocument LoadHtmlDocument(string url)
         {
-            
+            HtmlWeb web = new();
+            return web.Load(url);
+        }
+        private static List<MovieModel> GetInnerText(HtmlDocument document, string mainXpath, string nameXpath, string rateXpath)
+        {
             List<MovieModel> output = new List<MovieModel>();
-            foreach (HtmlNode node in document.DocumentNode.SelectNodes(mainXpath))
+            foreach (HtmlNode node in document.DocumentNode.SelectNodes(mainXpath) ??
+                throw new ArgumentException($"List could not found. Please check the URL and try again."))
             {
-                if (string.IsNullOrWhiteSpace(node.InnerText.ToString()) == false)
+                if (String.IsNullOrWhiteSpace(node.InnerText.ToString()) == false)
                 {
                     MovieModel models = new MovieModel
                     {
@@ -42,9 +46,19 @@ namespace IMDbLSLibrary
             }
             return output;
         }
-        public List<MovieModel> Sort(List<MovieModel> movieList)
+        public static List<MovieModel> Sort(List<MovieModel> movieList, SortType typeOfSort)
         {
-            return movieList.OrderByDescending(x => x.MovieRate).ThenBy(x => x.MovieName).ToList();
+            switch (typeOfSort)
+            {
+                case SortType.Rate:
+                    return movieList?.OrderByDescending(x => x.MovieRate).ThenBy(x => x.MovieName).ThenByDescending(x => x.MovieDate).ToList();
+                case SortType.Date:
+                    return movieList?.OrderByDescending(x => x.MovieDate).ThenBy(x => x.MovieRate).ThenByDescending(x => x.MovieName).ToList();
+                case SortType.Alphabetical:
+                    return movieList?.OrderBy(x => x.MovieName).ThenByDescending(x => x.MovieRate).ThenByDescending(x => x.MovieDate).ToList();
+                default:
+                    return movieList;
+            }
         }
     }
 }

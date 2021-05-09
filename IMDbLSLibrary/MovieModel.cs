@@ -10,5 +10,6 @@ namespace IMDbLSLibrary
     {
         public string MovieName { get; set; }
         public string MovieRate { get; set; }
+        public string MovieDate { get; set; }
     }
 }
