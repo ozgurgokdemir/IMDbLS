@@ -12,11 +12,13 @@ namespace IMDbLSLibrary
             HtmlDocument document = LoadHtmlDocument(url);
             if (url.Contains("list") && url.Contains("watchlist") == false || url.Contains("ratings"))
             {
-                return GetInnerText(document, "//div[@class='lister-list']//div[@class='lister-item-content']", ".//h3[@class='lister-item-header']//a", ".//span[@class='ipl-rating-star__rating']");
+                return GetInnerText(document, "//div[@class='lister-list']//div[@class='lister-item-content']", ".//h3[@class='lister-item-header']//a", 
+                    ".//span[@class='ipl-rating-star__rating']", ".//h3[@class='lister-item-header']//span[@class='lister-item-year text-muted unbold']");
             }
             else if (url.Contains("top") || url.Contains("meter"))
             {
-                return GetInnerText(document, "//*[@class='lister-list']//tr", ".//td[@class='titleColumn']//a", ".//td[@class='ratingColumn imdbRating']//strong");
+                return GetInnerText(document, "//*[@class='lister-list']//tr", ".//td[@class='titleColumn']//a", 
+                    ".//td[@class='ratingColumn imdbRating']//strong", ".//td[@class='titleColumn']//span[@class='secondaryInfo']");
             }
             else
             {
@@ -28,7 +30,7 @@ namespace IMDbLSLibrary
             HtmlWeb web = new();
             return web.Load(url);
         }
-        private static List<MovieModel> GetInnerText(HtmlDocument document, string mainXpath, string nameXpath, string rateXpath)
+        private static List<MovieModel> GetInnerText(HtmlDocument document, string mainXpath, string nameXpath, string rateXpath, string dateXpath)
         {
             List<MovieModel> output = new List<MovieModel>();
             foreach (HtmlNode node in document.DocumentNode.SelectNodes(mainXpath) ??
@@ -39,7 +41,8 @@ namespace IMDbLSLibrary
                     MovieModel models = new MovieModel
                     {
                         MovieName = node.SelectSingleNode(nameXpath).InnerText.ToString(),
-                        MovieRate = node?.SelectSingleNode(rateXpath)?.InnerText.ToString()
+                        MovieRate = node?.SelectSingleNode(rateXpath)?.InnerText.ToString(),
+                        MovieDate = node?.SelectSingleNode(dateXpath)?.InnerText.ToString()
                     };
                     output.Add(models);
                 }
@@ -53,7 +56,7 @@ namespace IMDbLSLibrary
                 case SortType.Rate:
                     return movieList?.OrderByDescending(x => x.MovieRate).ThenBy(x => x.MovieName).ThenByDescending(x => x.MovieDate).ToList();
                 case SortType.Date:
-                    return movieList?.OrderByDescending(x => x.MovieDate).ThenBy(x => x.MovieRate).ThenByDescending(x => x.MovieName).ToList();
+                    return movieList?.OrderByDescending(x => x.MovieDate.Substring(1, 5)).ThenByDescending(x => x.MovieRate).ThenBy(x => x.MovieName).ToList();
                 case SortType.Alphabetical:
                     return movieList?.OrderBy(x => x.MovieName).ThenByDescending(x => x.MovieRate).ThenByDescending(x => x.MovieDate).ToList();
                 default:

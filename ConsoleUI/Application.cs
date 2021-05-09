@@ -126,25 +126,46 @@ namespace ConsoleUI
         }
         static void PrintMovieList(List<MovieModel> list)
         {
-            int position = 0;
-            int max_position_length;
+            int rank = 0;
+            int max_rank_length;
             int max_name_length = 0;
+            int max_date_length = 0;
             foreach (var item in list)
             {
-                position++;
+                rank++;
                 if (item.MovieName.Length > max_name_length)
                 {
                     max_name_length = item.MovieName.Length;
                 }
+                if (item.MovieDate.Length > max_date_length)
+                {
+                    max_date_length = item.MovieDate.Length;
+                }
             }
-            max_position_length = (int)Math.Floor(Math.Log10(position) + 1);
-            position = 0;
-            string format = "{0,-" + (max_position_length + 2) + "}{1,-" + (max_name_length + 1) + "}{2,-" + 4 + "}";
-            Console.WriteLine(String.Format(format, null, "Name", "Rate"));
+            max_rank_length = (int)Math.Floor(Math.Log10(rank) + 1);
+            rank = 0;
+            string format = "{0,-" + (max_rank_length + 2) + "}{1,-" + (max_name_length + 1) + "}{2,-" + 5 + "}{3, 15}";
+            Console.WriteLine(String.Format(format, null, "Name", "Rate", "Release Date"));
             foreach (var item in list)
             {
-                position++;
-                Console.WriteLine(String.Format(format, position + ".", item.MovieName, item.MovieRate));
+                rank++;
+                item.MovieDate = item.MovieDate.Substring(1, item.MovieDate.Length - 2).Trim();
+                if (max_date_length - 2 > 4)
+                {
+                    switch (item.MovieDate.Length)
+                    {
+                        case 4:
+                            item.MovieDate = item.MovieDate + "     ";
+                            break;
+                        case 5:
+                            item.MovieDate = item.MovieDate + "    ";
+                            break;
+                        default:
+                            item.MovieDate = item.MovieDate;
+                            break;
+                    }
+                }
+                Console.WriteLine(String.Format(format, rank + ".", item.MovieName, item.MovieRate, item.MovieDate));
             }
             Console.Write(Environment.NewLine);
         }
